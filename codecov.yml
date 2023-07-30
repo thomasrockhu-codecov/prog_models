@@ -1,5 +1,17 @@
+beta_groups:
+  - "labels"
+
 ignore:
   - "tests"  # Don't include tests
   - "src/prog_models/models/test_models"  # Dont include test models
   - "src/prog_models/datasets" # Dont include datasets (too long a test)
   - "src/prog_models/data_models" # Skip data models (doesn't work with coverage)
+
+flag_management:
+  individual_flags:
+    - name: smart-tests
+      carryforward: true
+      carryforward_mode: "labels"
+      statuses:
+        - type: "project"
+        - type: "patch"

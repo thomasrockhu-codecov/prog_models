@@ -1,0 +1,24 @@
+cli:
+  plugins:
+    pycoverage:
+      report_type: "json"
+
+runners:
+  python:
+    collect_tests_options:
+      - tests/test_base_models.py
+      - tests/test_battery.py
+      - tests/test_calc_error.py
+      - tests/test_centrifugal_pump.py
+      - tests/test_composite.py
+      - tests/test_datasets.py
+      - tests/test_dict_like_matrix_wrapper.py
+      - tests/test_direct.py
+      - tests/test_estimate_params.py
+      - tests/test_ensemble.py
+      - tests/test_linear_model.py
+      - tests/test_pneumatic_valve.py
+      - tests/test_powertrain.py
+      - tests/test_serialization.py
+      - tests/test_sim_result.py
+      - tests/test_uav_model.py
