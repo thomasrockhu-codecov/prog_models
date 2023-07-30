@@ -51,3 +51,39 @@ jobs:
         coverage xml -i
     - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v3
+
+  coverage-ats:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10']
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: pip-cache
+    - name: Install additional dependencies
+      run: |
+        pip install coverage
+        pip install importlib_metadata
+    - name: Update
+      run: pip install --upgrade --upgrade-strategy eager -e .
+    - name: Run tests and upload to Codecov
+      run: |
+        codecovcli create-commit
+        codecovcli create-report
+        codecovcli static-analysis --token=${CODECOV_STATIC_TOKEN}
+        BASE_COMMIT=$(git merge-base ${{ github.sha }}^ origin/main)
+        echo $BASE_COMMIT
+        codecovcli --codecov-yml-path=codecov_cli.yml -v label-analysis --token=${CODECOV_STATIC_TOKEN} --base-sha=${BASE_COMMIT}
+        codecovcli --codecov-yml-path=codecov_cli.yml do-upload --plugin pycoverage --plugin compress-pycoverage --flag smart-tests --fail-on-error
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        CODECOV_STATIC_TOKEN: ${{ secrets.CODECOV_STATIC_TOKEN }}
