@@ -60,6 +60,8 @@ jobs:
         python-version: ['3.10']
     steps:
     - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
@@ -73,6 +75,7 @@ jobs:
       run: |
         pip install coverage
         pip install importlib_metadata
+        pip install codecov-cli
     - name: Update
       run: pip install --upgrade --upgrade-strategy eager -e .
     - name: Run tests and upload to Codecov
