@@ -83,7 +83,7 @@ jobs:
         codecovcli create-commit
         codecovcli create-report
         codecovcli static-analysis --token=${CODECOV_STATIC_TOKEN}
-        BASE_COMMIT=$(git merge-base ${{ github.sha }}^ origin/main)
+        BASE_COMMIT=$(git merge-base ${{ github.sha }}^ origin/master)
         echo $BASE_COMMIT
         codecovcli --codecov-yml-path=codecov_cli.yml -v label-analysis --token=${CODECOV_STATIC_TOKEN} --base-sha=${BASE_COMMIT}
         codecovcli --codecov-yml-path=codecov_cli.yml do-upload --plugin pycoverage --plugin compress-pycoverage --flag smart-tests --fail-on-error
